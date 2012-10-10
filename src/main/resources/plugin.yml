@@ -1,3 +1,4 @@
 name: SimpleIRC
 version: 0.1
 main: uk.co.jacekk.bukkit.simpleirc.SimpleIRC
+softdepend: [Vault]
