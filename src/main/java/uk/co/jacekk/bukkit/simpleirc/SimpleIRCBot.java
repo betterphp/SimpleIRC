@@ -51,6 +51,8 @@ public class SimpleIRCBot extends PircBot implements Listener {
 		for (String channel : plugin.config.getStringList(Config.IRC_BOT_CHANNELS)){
 			this.joinChannel(channel);
 		}
+		
+		plugin.pluginManager.registerEvents(this, plugin);
 	}
 	
 	@Override
