@@ -132,8 +132,8 @@ public class SimpleIRCBot extends PircBot implements Listener {
 				String worldName = player.getWorld().getName();
 				String message = ChatColorHelper.convertMCtoIRC(event.getMessage());
 				
-				String prefix = (plugin.chat == null) ? ChatColorHelper.DEFAULT_PREFIX : plugin.chat.getPlayerPrefix(worldName, playerName);
-				String suffix = (plugin.chat == null) ? ChatColorHelper.DEFAULT_SUFFIX : plugin.chat.getPlayerSuffix(worldName, playerName);
+				String prefix = ChatColorHelper.convertMCtoIRC((plugin.chat == null) ? ChatColorHelper.DEFAULT_PREFIX : plugin.chat.getPlayerPrefix(worldName, playerName));
+				String suffix = ChatColorHelper.convertMCtoIRC((plugin.chat == null) ? ChatColorHelper.DEFAULT_SUFFIX : plugin.chat.getPlayerSuffix(worldName, playerName));
 				
 				for (String channel : plugin.config.getStringList(Config.IRC_BOT_CHANNELS)){
 					SimpleIRCBot.this.sendMessage(channel, prefix + playerName + suffix + message);
