@@ -64,6 +64,14 @@ public class SimpleIRCBot extends PircBot implements Listener {
 			String prefix = (plugin.chat == null) ? ChatColorHelper.DEFAULT_PREFIX : plugin.chat.getPlayerPrefix(worldName, sender);
 			String suffix = (plugin.chat == null) ? ChatColorHelper.DEFAULT_SUFFIX : plugin.chat.getPlayerSuffix(worldName, sender);
 			
+			if (prefix.isEmpty() && suffix.isEmpty()){
+				prefix = ChatColorHelper.DEFAULT_PREFIX;
+				suffix = ChatColorHelper.DEFAULT_SUFFIX;
+			}
+			
+			prefix = ChatColorHelper.convertMCtoIRC(prefix);
+			suffix = ChatColorHelper.convertMCtoIRC(suffix);
+			
 			plugin.server.broadcastMessage(ChatColor.AQUA + "[IRC]" + ChatColor.RESET + prefix + sender + suffix + ChatColorHelper.convertIRCtoMC(message));
 		}
 	}
@@ -132,8 +140,16 @@ public class SimpleIRCBot extends PircBot implements Listener {
 				String worldName = player.getWorld().getName();
 				String message = ChatColorHelper.convertMCtoIRC(event.getMessage());
 				
-				String prefix = ChatColorHelper.convertMCtoIRC((plugin.chat == null) ? ChatColorHelper.DEFAULT_PREFIX : plugin.chat.getPlayerPrefix(worldName, playerName));
-				String suffix = ChatColorHelper.convertMCtoIRC((plugin.chat == null) ? ChatColorHelper.DEFAULT_SUFFIX : plugin.chat.getPlayerSuffix(worldName, playerName));
+				String prefix = (plugin.chat == null) ? ChatColorHelper.DEFAULT_PREFIX : plugin.chat.getPlayerPrefix(worldName, playerName);
+				String suffix = (plugin.chat == null) ? ChatColorHelper.DEFAULT_SUFFIX : plugin.chat.getPlayerSuffix(worldName, playerName);
+				
+				if (prefix.isEmpty() && suffix.isEmpty()){
+					prefix = ChatColorHelper.DEFAULT_PREFIX;
+					suffix = ChatColorHelper.DEFAULT_SUFFIX;
+				}
+				
+				prefix = ChatColorHelper.convertMCtoIRC(prefix);
+				suffix = ChatColorHelper.convertMCtoIRC(suffix);
 				
 				for (String channel : plugin.config.getStringList(Config.IRC_BOT_CHANNELS)){
 					SimpleIRCBot.this.sendMessage(channel, prefix + playerName + suffix + message);
