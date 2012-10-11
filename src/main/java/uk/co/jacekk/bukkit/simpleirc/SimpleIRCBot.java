@@ -59,20 +59,15 @@ public class SimpleIRCBot extends PircBot implements Listener {
 	public void onMessage(String channel, String sender, String login, String hostname, String message){
 		if (!sender.equals(this.getNick())){
 			Player player = plugin.server.getPlayer(sender);
-			String worldName = (player == null) ? plugin.server.getWorlds().get(0).getName() : player.getWorld().getName();
 			
-			String prefix = (plugin.chat == null) ? ChatColorHelper.DEFAULT_PREFIX : plugin.chat.getPlayerPrefix(worldName, sender);
-			String suffix = (plugin.chat == null) ? ChatColorHelper.DEFAULT_SUFFIX : plugin.chat.getPlayerSuffix(worldName, sender);
+			SimpleIRCPlayer ircPlayer = new SimpleIRCPlayer(sender, player);
+			AsyncPlayerChatEvent chatEvent = new AsyncPlayerChatEvent(false, ircPlayer, message, null);
 			
-			if (prefix.isEmpty() && suffix.isEmpty()){
-				prefix = ChatColorHelper.DEFAULT_PREFIX;
-				suffix = ChatColorHelper.DEFAULT_SUFFIX;
+			plugin.pluginManager.callEvent(chatEvent);
+			
+			if (!chatEvent.isCancelled()){
+				plugin.server.broadcastMessage(ChatColor.AQUA + "[IRC]" + ChatColor.RESET + String.format(chatEvent.getFormat(), sender, ChatColorHelper.convertIRCtoMC(message)));
 			}
-			
-			prefix = ChatColorHelper.convertMCtoIRC(prefix);
-			suffix = ChatColorHelper.convertMCtoIRC(suffix);
-			
-			plugin.server.broadcastMessage(ChatColor.AQUA + "[IRC]" + ChatColor.RESET + prefix + sender + suffix + ChatColorHelper.convertIRCtoMC(message));
 		}
 	}
 	
@@ -132,33 +127,23 @@ public class SimpleIRCBot extends PircBot implements Listener {
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onPlayerChat(final AsyncPlayerChatEvent event){
-		plugin.scheduler.callSyncMethod(plugin, new Callable<Boolean>(){
-			
-			public Boolean call() throws Exception{
-				Player player = event.getPlayer();
-				String playerName = player.getName();
-				String worldName = player.getWorld().getName();
-				String message = ChatColorHelper.convertMCtoIRC(event.getMessage());
+		if (event.isAsynchronous()){
+			plugin.scheduler.callSyncMethod(plugin, new Callable<Boolean>(){
 				
-				String prefix = (plugin.chat == null) ? ChatColorHelper.DEFAULT_PREFIX : plugin.chat.getPlayerPrefix(worldName, playerName);
-				String suffix = (plugin.chat == null) ? ChatColorHelper.DEFAULT_SUFFIX : plugin.chat.getPlayerSuffix(worldName, playerName);
-				
-				if (prefix.isEmpty() && suffix.isEmpty()){
-					prefix = ChatColorHelper.DEFAULT_PREFIX;
-					suffix = ChatColorHelper.DEFAULT_SUFFIX;
+				public Boolean call() throws Exception{
+					String playerName = event.getPlayer().getName();
+					
+					String message = ChatColorHelper.convertMCtoIRC(String.format(event.getFormat(), playerName, event.getMessage()));
+					
+					for (String channel : plugin.config.getStringList(Config.IRC_BOT_CHANNELS)){
+						SimpleIRCBot.this.sendMessage(channel, message);
+					}
+					
+					return true;
 				}
 				
-				prefix = ChatColorHelper.convertMCtoIRC(prefix);
-				suffix = ChatColorHelper.convertMCtoIRC(suffix);
-				
-				for (String channel : plugin.config.getStringList(Config.IRC_BOT_CHANNELS)){
-					SimpleIRCBot.this.sendMessage(channel, prefix + playerName + suffix + message);
-				}
-				
-				return true;
-			}
-			
-		});
+			});
+		}
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
