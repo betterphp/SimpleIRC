@@ -28,4 +28,8 @@ public class SimpleIRC extends BasePlugin {
 		this.bot = new SimpleIRCBot(this, this.config.getString(Config.IRC_BOT_NICK), this.config.getString(Config.IRC_BOT_PASSWORD), this.config.getBoolean(Config.IRC_BOT_VERBOSE));
 	}
 	
+	public void onDisable(){
+		this.bot.disconnect();
+	}
+	
 }
