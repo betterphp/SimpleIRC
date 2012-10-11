@@ -12,8 +12,7 @@ public enum Config implements PluginConfigKey {
 	IRC_BOT_NICK(			"irc.bot.nick",				"MCBot"),
 	IRC_BOT_PASSWORD(		"irc.bot.password",			"nickserv_password"),
 	IRC_BOT_CHANNELS(		"irc.bot.channels",			Arrays.asList("#something", "#somethingelse")),
-	IRC_BOT_VERBOSE(		"irc.bot.verbose",			false),
-	;
+	IRC_BOT_VERBOSE(		"irc.bot.verbose",			false);
 	
 	private String key;
 	private Object defaultValue;

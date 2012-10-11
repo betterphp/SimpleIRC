@@ -8,8 +8,8 @@ import org.jibble.pircbot.Colors;
 
 public class ChatColorHelper {
 	
-	public static final String DEFAULT_PREFIX = ChatColor.RED + "[E]" + ChatColor.RESET + "[";
-	public static final String DEFAULT_SUFFIX = "]: ";
+	public static final String DEFAULT_PREFIX = "<";
+	public static final String DEFAULT_SUFFIX = "> ";
 	
 	private static HashMap<String, String> mcColourCodeMap;
 	private static HashMap<String, String> IRCColourCodeMap;
