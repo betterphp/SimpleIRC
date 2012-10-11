@@ -37,7 +37,7 @@ public class SimpleIRCBot extends PircBot implements Listener {
 				this.connect(plugin.config.getString(Config.IRC_SERVER_ADDRESS), plugin.config.getInt(Config.IRC_SERVER_PORT), serverPassword);
 			}
 		}catch (NickAlreadyInUseException e){
-			plugin.log.fatal("The IRC nick you chose is already in use.");
+			plugin.log.fatal("The IRC nick you chose is already in use, it's probably a good idea to pick a unique one and register it with NickServ if the server allows it.");
 		}catch (IOException e){
 			e.printStackTrace();
 		}catch (IrcException e){
