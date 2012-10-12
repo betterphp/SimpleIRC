@@ -60,16 +60,16 @@ public class SimpleIRCBot extends PircBot implements Listener {
 		if (!sender.equals(this.getNick())){
 			Player player = plugin.server.getPlayer(sender);
 			
+			if (plugin.ircAliases.containsKey(sender)){
+				sender = plugin.ircAliases.get(sender);
+			}
+			
 			SimpleIRCPlayer ircPlayer = new SimpleIRCPlayer(sender, player);
 			AsyncPlayerChatEvent chatEvent = new AsyncPlayerChatEvent(false, ircPlayer, message, null);
 			
 			plugin.pluginManager.callEvent(chatEvent);
 			
 			if (!chatEvent.isCancelled()){
-				if (plugin.ircAliases.containsKey(sender)){
-					sender = plugin.ircAliases.get(sender);
-				}
-				
 				plugin.server.broadcastMessage(ChatColor.AQUA + "[IRC]" + ChatColor.RESET + String.format(chatEvent.getFormat(), sender, ChatColorHelper.convertIRCtoMC(message)));
 			}
 		}
