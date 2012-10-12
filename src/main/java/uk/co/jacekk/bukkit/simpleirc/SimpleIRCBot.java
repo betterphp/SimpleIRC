@@ -66,6 +66,10 @@ public class SimpleIRCBot extends PircBot implements Listener {
 			plugin.pluginManager.callEvent(chatEvent);
 			
 			if (!chatEvent.isCancelled()){
+				if (plugin.ircAliases.containsKey(sender)){
+					sender = plugin.ircAliases.get(sender);
+				}
+				
 				plugin.server.broadcastMessage(ChatColor.AQUA + "[IRC]" + ChatColor.RESET + String.format(chatEvent.getFormat(), sender, ChatColorHelper.convertIRCtoMC(message)));
 			}
 		}
@@ -74,6 +78,10 @@ public class SimpleIRCBot extends PircBot implements Listener {
 	@Override
 	public void onAction(String sender, String login, String hostname, String target, String action){
 		if (!sender.equals(this.getNick())){
+			if (plugin.ircAliases.containsKey(sender)){
+				sender = plugin.ircAliases.get(sender);
+			}
+			
 			plugin.server.broadcastMessage(ChatColor.AQUA + "[IRC] " + ChatColor.RESET + "* " + sender + " " + action);
 		}
 	}
@@ -81,6 +89,10 @@ public class SimpleIRCBot extends PircBot implements Listener {
 	@Override
 	public void onJoin(String channel, String sender, String login, String hostname){
 		if (!sender.equals(this.getNick())){
+			if (plugin.ircAliases.containsKey(sender)){
+				sender = plugin.ircAliases.get(sender);
+			}
+			
 			plugin.server.broadcastMessage(ChatColor.AQUA + "[IRC] " + ChatColor.YELLOW + sender + " has joined the chat");
 		}
 	}
@@ -88,6 +100,10 @@ public class SimpleIRCBot extends PircBot implements Listener {
 	@Override
 	public void onPart(String channel, String sender, String login, String hostname){
 		if (!sender.equals(this.getNick())){
+			if (plugin.ircAliases.containsKey(sender)){
+				sender = plugin.ircAliases.get(sender);
+			}
+			
 			plugin.server.broadcastMessage(ChatColor.AQUA + "[IRC] " + ChatColor.YELLOW + sender + " has left the chat");
 		}
 	}
@@ -95,6 +111,10 @@ public class SimpleIRCBot extends PircBot implements Listener {
 	@Override
 	public void onQuit(String sourceNick, String sourceLogin, String sourceHostname, String reason){
 		if (!sourceNick.equals(this.getNick())){
+			if (plugin.ircAliases.containsKey(sourceNick)){
+				sourceNick = plugin.ircAliases.get(sourceNick);
+			}
+			
 			plugin.server.broadcastMessage(ChatColor.AQUA + "[IRC] " + ChatColor.YELLOW + sourceNick + " has left the chat");
 		}
 	}
@@ -104,6 +124,10 @@ public class SimpleIRCBot extends PircBot implements Listener {
 		if (recipientNick.equals(this.getNick())){
 			this.joinChannel(channel);
 		}else{
+			if (plugin.ircAliases.containsKey(recipientNick)){
+				recipientNick = plugin.ircAliases.get(recipientNick);
+			}
+			
 			plugin.server.broadcastMessage(ChatColor.AQUA + "[IRC] " + ChatColor.YELLOW + recipientNick + " has left the chat");
 		}
 	}
@@ -133,6 +157,10 @@ public class SimpleIRCBot extends PircBot implements Listener {
 				public Boolean call() throws Exception{
 					String playerName = event.getPlayer().getName();
 					
+					if (plugin.gameAliases.containsKey(playerName)){
+						playerName = plugin.ircAliases.get(playerName);
+					}
+					
 					String message = ChatColorHelper.convertMCtoIRC(String.format(event.getFormat(), playerName, event.getMessage()));
 					
 					for (String channel : plugin.config.getStringList(Config.IRC_BOT_CHANNELS)){
@@ -152,6 +180,10 @@ public class SimpleIRCBot extends PircBot implements Listener {
 		String[] parts = event.getMessage().split(" ", 2);
 		
 		if (parts[0].equalsIgnoreCase("/me")){
+			if (plugin.gameAliases.containsKey(playerName)){
+				playerName = plugin.ircAliases.get(playerName);
+			}
+			
 			for (String channel : plugin.config.getStringList(Config.IRC_BOT_CHANNELS)){
 				SimpleIRCBot.this.sendMessage(channel, "* " + playerName + " " + parts[1]);
 			}
@@ -160,7 +192,12 @@ public class SimpleIRCBot extends PircBot implements Listener {
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onPlayerJoin(PlayerJoinEvent event){
+		String playerName = event.getPlayer().getName();
 		String message = event.getJoinMessage();
+		
+		if (plugin.gameAliases.containsKey(playerName)){
+			message = message.replaceAll(playerName, plugin.ircAliases.get(playerName));
+		}
 		
 		for (String channel : plugin.config.getStringList(Config.IRC_BOT_CHANNELS)){
 			SimpleIRCBot.this.sendMessage(channel, ChatColorHelper.convertMCtoIRC(message));
@@ -169,7 +206,12 @@ public class SimpleIRCBot extends PircBot implements Listener {
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onPlayerQuit(PlayerQuitEvent event){
+		String playerName = event.getPlayer().getName();
 		String message = event.getQuitMessage();
+		
+		if (plugin.gameAliases.containsKey(playerName)){
+			message = message.replaceAll(playerName, plugin.ircAliases.get(playerName));
+		}
 		
 		for (String channel : plugin.config.getStringList(Config.IRC_BOT_CHANNELS)){
 			SimpleIRCBot.this.sendMessage(channel, ChatColorHelper.convertMCtoIRC(message));
@@ -178,7 +220,12 @@ public class SimpleIRCBot extends PircBot implements Listener {
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onPlayerDeath(PlayerDeathEvent event){
+		String playerName = event.getEntity().getName();
 		String message = event.getDeathMessage();
+		
+		if (plugin.gameAliases.containsKey(playerName)){
+			message = message.replaceAll(playerName, plugin.ircAliases.get(playerName));
+		}
 		
 		for (String channel : plugin.config.getStringList(Config.IRC_BOT_CHANNELS)){
 			SimpleIRCBot.this.sendMessage(channel, ChatColorHelper.convertMCtoIRC(ChatColor.GRAY + message));
