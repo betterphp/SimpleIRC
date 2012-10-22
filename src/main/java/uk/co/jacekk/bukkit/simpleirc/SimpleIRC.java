@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import uk.co.jacekk.bukkit.baseplugin.v3.BasePlugin;
 import uk.co.jacekk.bukkit.baseplugin.v3.config.PluginConfig;
 import uk.co.jacekk.bukkit.baseplugin.v3.storage.DataStore;
+import uk.co.jacekk.bukkit.baseplugin.v3.storage.ListStore;
 
 public class SimpleIRC extends BasePlugin {
 	
@@ -17,6 +18,8 @@ public class SimpleIRC extends BasePlugin {
 	protected HashMap<String, String> ircAliases;
 	protected HashMap<String, String> gameAliases;
 	
+	protected ListStore enabledCommands;
+	
 	public void onEnable(){
 		super.onEnable(true);
 		
@@ -26,6 +29,9 @@ public class SimpleIRC extends BasePlugin {
 		
 		this.ircAliases = new HashMap<String, String>(this.aliasStore.size());
 		this.gameAliases = new HashMap<String, String>(this.aliasStore.size());
+		
+		this.enabledCommands = new ListStore(new File(this.baseDirPath + File.separator + "commands.txt"), false);
+		this.enabledCommands.load();
 		
 		for (Entry<String, String> entry : this.aliasStore.getAll()){
 			this.ircAliases.put(entry.getKey(), entry.getValue());

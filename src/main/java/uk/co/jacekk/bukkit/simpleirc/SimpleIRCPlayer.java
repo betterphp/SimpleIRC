@@ -1,6 +1,7 @@
 package uk.co.jacekk.bukkit.simpleirc;
 
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -53,6 +54,8 @@ public class SimpleIRCPlayer implements Player {
 	private String name;
 	private Player player;
 	
+	private ArrayList<String> messages;
+	
 	public SimpleIRCPlayer(String name, Player player){
 		this.name = name;
 		this.player = player;
@@ -70,6 +73,26 @@ public class SimpleIRCPlayer implements Player {
 		}
 		
 		return Bukkit.getWorlds().get(0);
+	}
+	
+	@Override
+	public void sendMessage(String message){
+		if (this.player != null){
+			this.player.sendMessage(message);
+		}
+		
+		this.messages.add(message);
+	}
+	
+	@Override
+	public void sendMessage(String[] messages){
+		for (String message : messages){
+			this.sendMessage(message);
+		}
+	}
+	
+	public ArrayList<String> getReceivedMessages(){
+		return this.messages;
 	}
 	
 	// Begin wrapper methods
@@ -971,20 +994,6 @@ public class SimpleIRCPlayer implements Player {
 		}
 		
 		return false;
-	}
-	
-	@Override
-	public void sendMessage(String message){
-		if (this.player != null){
-			this.player.sendMessage(message);
-		}
-	}
-	
-	@Override
-	public void sendMessage(String[] messages){
-		if (this.player != null){
-			this.player.sendMessage(messages);
-		}
 	}
 	
 	@Override

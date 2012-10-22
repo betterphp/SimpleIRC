@@ -1,5 +1,6 @@
 package uk.co.jacekk.bukkit.simpleirc;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.util.concurrent.Callable;
 
@@ -58,19 +59,35 @@ public class SimpleIRCBot extends PircBot implements Listener {
 	@Override
 	public void onMessage(String channel, String sender, String login, String hostname, String message){
 		if (!sender.equals(this.getNick())){
-			Player player = plugin.server.getPlayer(sender);
-			
 			if (plugin.ircAliases.containsKey(sender)){
 				sender = plugin.ircAliases.get(sender);
 			}
 			
+			Player player = plugin.server.getPlayer(sender);
+			
 			SimpleIRCPlayer ircPlayer = new SimpleIRCPlayer(sender, player);
-			AsyncPlayerChatEvent chatEvent = new AsyncPlayerChatEvent(false, ircPlayer, message, null);
 			
-			plugin.pluginManager.callEvent(chatEvent);
-			
-			if (!chatEvent.isCancelled()){
-				plugin.server.broadcastMessage(ChatColor.AQUA + "[IRC]" + ChatColor.RESET + String.format(chatEvent.getFormat(), sender, ChatColorHelper.convertIRCtoMC(message)));
+			if (message.startsWith(".")){
+				String command = message.substring(1);
+				String[] parts = command.split(" ");
+				
+				if (!plugin.enabledCommands.contains(parts[0])){
+					this.sendMessage(channel, Color.RED + "That command is not listed in the commands.txt file.");
+				}else{
+					plugin.server.dispatchCommand(ircPlayer, command);
+					
+					for (String line : ircPlayer.getReceivedMessages()){
+						this.sendMessage(channel, ChatColorHelper.convertMCtoIRC(line));
+					}
+				}
+			}else{
+				AsyncPlayerChatEvent chatEvent = new AsyncPlayerChatEvent(false, ircPlayer, message, null);
+				
+				plugin.pluginManager.callEvent(chatEvent);
+				
+				if (!chatEvent.isCancelled()){
+					plugin.server.broadcastMessage(ChatColor.AQUA + "[IRC]" + ChatColor.RESET + String.format(chatEvent.getFormat(), sender, ChatColorHelper.convertIRCtoMC(message)));
+				}
 			}
 		}
 	}
