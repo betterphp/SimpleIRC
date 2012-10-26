@@ -2,6 +2,9 @@ package uk.co.jacekk.bukkit.simpleirc;
 
 import java.awt.Color;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.Callable;
 
 import org.bukkit.ChatColor;
@@ -81,7 +84,7 @@ public class SimpleIRCBot extends PircBot implements Listener {
 					}
 				}
 			}else{
-				AsyncPlayerChatEvent chatEvent = new AsyncPlayerChatEvent(false, ircPlayer, message, null);
+				AsyncPlayerChatEvent chatEvent = new AsyncPlayerChatEvent(false, ircPlayer, message, new HashSet<Player>(Arrays.asList(plugin.server.getOnlinePlayers())));
 				
 				plugin.pluginManager.callEvent(chatEvent);
 				
