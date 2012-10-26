@@ -3,6 +3,7 @@ package uk.co.jacekk.bukkit.simpleirc;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -146,7 +147,7 @@ public class SimpleIRCPlayer implements Player {
 			return this.player.getItemInHand();
 		}
 		
-		return null;
+		return new ItemStack(Material.AIR, 0);
 	}
 	
 	@Override
@@ -155,7 +156,7 @@ public class SimpleIRCPlayer implements Player {
 			return this.player.getItemOnCursor();
 		}
 		
-		return null;
+		return new ItemStack(Material.AIR, 0);
 	}
 	
 	@Override
@@ -305,7 +306,7 @@ public class SimpleIRCPlayer implements Player {
 			return this.player.getActivePotionEffects();
 		}
 		
-		return null;
+		return Collections.emptyList();
 	}
 	
 	@Override
@@ -332,7 +333,7 @@ public class SimpleIRCPlayer implements Player {
 			return this.player.getEyeLocation();
 		}
 		
-		return null;
+		return Bukkit.getWorlds().get(0).getSpawnLocation();
 	}
 	
 	@Override
@@ -368,7 +369,7 @@ public class SimpleIRCPlayer implements Player {
 			return this.player.getLastTwoTargetBlocks(arg0, arg1);
 		}
 		
-		return null;
+		return Collections.emptyList();
 	}
 	
 	@Override
@@ -377,7 +378,7 @@ public class SimpleIRCPlayer implements Player {
 			return this.player.getLineOfSight(arg0, arg1);
 		}
 		
-		return null;
+		return Collections.emptyList();
 	}
 	
 	@Override
@@ -591,7 +592,7 @@ public class SimpleIRCPlayer implements Player {
 			return this.player.getLocation();
 		}
 		
-		return null;
+		return Bukkit.getWorlds().get(0).getSpawnLocation();
 	}
 	
 	@Override
@@ -609,7 +610,7 @@ public class SimpleIRCPlayer implements Player {
 			return this.player.getNearbyEntities(x, y, z);
 		}
 		
-		return null;
+		return Collections.emptyList();
 	}
 	
 	@Override
@@ -672,7 +673,7 @@ public class SimpleIRCPlayer implements Player {
 			return this.player.getVelocity();
 		}
 		
-		return null;
+		return new Vector(0, 0, 0);
 	}
 	
 	@Override
@@ -820,7 +821,7 @@ public class SimpleIRCPlayer implements Player {
 			return this.player.getMetadata(metadataKey);
 		}
 		
-		return null;
+		return Collections.emptyList();
 	}
 	
 	@Override
@@ -888,7 +889,7 @@ public class SimpleIRCPlayer implements Player {
 			return this.player.getEffectivePermissions();
 		}
 		
-		return null;
+		return Collections.emptySet();
 	}
 	
 	@Override
@@ -1088,7 +1089,7 @@ public class SimpleIRCPlayer implements Player {
 			return this.player.getListeningPluginChannels();
 		}
 		
-		return null;
+		return Collections.emptySet();
 	}
 	
 	@Override
@@ -1145,7 +1146,7 @@ public class SimpleIRCPlayer implements Player {
 			return this.player.getBedSpawnLocation();
 		}
 		
-		return null;
+		return Bukkit.getOfflinePlayer(this.name).getBedSpawnLocation();
 	}
 	
 	@Override
@@ -1154,7 +1155,7 @@ public class SimpleIRCPlayer implements Player {
 			return this.player.getCompassTarget();
 		}
 		
-		return null;
+		return Bukkit.getWorlds().get(0).getSpawnLocation();
 	}
 	
 	@Override
@@ -1163,7 +1164,7 @@ public class SimpleIRCPlayer implements Player {
 			return this.player.getDisplayName();
 		}
 		
-		return null;
+		return this.name;
 	}
 	
 	@Override
@@ -1217,7 +1218,7 @@ public class SimpleIRCPlayer implements Player {
 			return this.player.getPlayerListName();
 		}
 		
-		return null;
+		return this.name;
 	}
 	
 	@Override
