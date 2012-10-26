@@ -104,8 +104,18 @@ public class SimpleIRCPlayer implements Player {
 	}
 	
 	@Override
+	public boolean hasPermission(Permission perm){
+		return true;
+	}
+	
+	@Override
 	public boolean isOp(){
-		return false;
+		return true;
+	}
+	
+	@Override
+	public void setOp(boolean value){
+		
 	}
 	
 	// Begin wrapper methods
@@ -905,15 +915,6 @@ public class SimpleIRCPlayer implements Player {
 	}
 	
 	@Override
-	public boolean hasPermission(Permission perm){
-		if (this.player != null){
-			return this.player.hasPermission(perm);
-		}
-		
-		return false;
-	}
-	
-	@Override
 	public boolean isPermissionSet(String name){
 		if (this.player != null){
 			return this.player.isPermissionSet(name);
@@ -942,13 +943,6 @@ public class SimpleIRCPlayer implements Player {
 	public void removeAttachment(PermissionAttachment attachment){
 		if (this.player != null){
 			this.player.removeAttachment(attachment);
-		}
-	}
-	
-	@Override
-	public void setOp(boolean value){
-		if (this.player != null){
-			this.player.setOp(value);
 		}
 	}
 	
