@@ -183,7 +183,7 @@ public class SimpleIRCBot extends PircBot implements Listener {
 					String playerName = event.getPlayer().getName();
 					
 					if (plugin.gameAliases.containsKey(playerName)){
-						playerName = plugin.ircAliases.get(playerName);
+						playerName = plugin.gameAliases.get(playerName);
 					}
 					
 					String message = ChatColorHelper.convertMCtoIRC(String.format(event.getFormat(), playerName, event.getMessage()));
@@ -206,7 +206,7 @@ public class SimpleIRCBot extends PircBot implements Listener {
 		
 		if (parts[0].equalsIgnoreCase("/me")){
 			if (plugin.gameAliases.containsKey(playerName)){
-				playerName = plugin.ircAliases.get(playerName);
+				playerName = plugin.gameAliases.get(playerName);
 			}
 			
 			for (String channel : plugin.config.getStringList(Config.IRC_BOT_CHANNELS)){
@@ -221,7 +221,7 @@ public class SimpleIRCBot extends PircBot implements Listener {
 		String message = event.getJoinMessage();
 		
 		if (plugin.gameAliases.containsKey(playerName)){
-			message = message.replaceAll(playerName, plugin.ircAliases.get(playerName));
+			message = message.replaceAll(playerName, plugin.gameAliases.get(playerName));
 		}
 		
 		for (String channel : plugin.config.getStringList(Config.IRC_BOT_CHANNELS)){
@@ -235,7 +235,7 @@ public class SimpleIRCBot extends PircBot implements Listener {
 		String message = event.getQuitMessage();
 		
 		if (plugin.gameAliases.containsKey(playerName)){
-			message = message.replaceAll(playerName, plugin.ircAliases.get(playerName));
+			message = message.replaceAll(playerName, plugin.gameAliases.get(playerName));
 		}
 		
 		for (String channel : plugin.config.getStringList(Config.IRC_BOT_CHANNELS)){
@@ -249,7 +249,7 @@ public class SimpleIRCBot extends PircBot implements Listener {
 		String message = event.getDeathMessage();
 		
 		if (plugin.gameAliases.containsKey(playerName)){
-			message = message.replaceAll(playerName, plugin.ircAliases.get(playerName));
+			message = message.replaceAll(playerName, plugin.gameAliases.get(playerName));
 		}
 		
 		for (String channel : plugin.config.getStringList(Config.IRC_BOT_CHANNELS)){
