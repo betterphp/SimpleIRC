@@ -1,10 +1,8 @@
 package uk.co.jacekk.bukkit.simpleirc;
 
-import java.awt.Color;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.concurrent.Callable;
 
 import org.bukkit.ChatColor;
@@ -17,6 +15,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.jibble.pircbot.Colors;
 import org.jibble.pircbot.IrcException;
 import org.jibble.pircbot.NickAlreadyInUseException;
 import org.jibble.pircbot.PircBot;
@@ -75,7 +74,7 @@ public class SimpleIRCBot extends PircBot implements Listener {
 				String[] parts = command.split(" ");
 				
 				if (!plugin.enabledCommands.contains(parts[0])){
-					this.sendMessage(channel, Color.RED + "That command is not listed in the commands.txt file.");
+					this.sendMessage(channel, Colors.RED + "That command is not listed in the commands.txt file.");
 				}else{
 					plugin.server.dispatchCommand(ircPlayer, command);
 					
