@@ -60,6 +60,8 @@ public class SimpleIRCPlayer implements Player {
 	public SimpleIRCPlayer(String name, Player player){
 		this.name = name;
 		this.player = player;
+		
+		this.messages = new ArrayList<String>();
 	}
 	
 	@Override

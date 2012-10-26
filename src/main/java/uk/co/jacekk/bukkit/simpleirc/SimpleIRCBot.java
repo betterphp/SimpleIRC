@@ -89,7 +89,13 @@ public class SimpleIRCBot extends PircBot implements Listener {
 				plugin.pluginManager.callEvent(chatEvent);
 				
 				if (!chatEvent.isCancelled()){
-					plugin.server.broadcastMessage(ChatColor.AQUA + "[IRC]" + ChatColor.RESET + String.format(chatEvent.getFormat(), sender, ChatColorHelper.convertIRCtoMC(message)));
+					String chatMessage = ChatColor.AQUA + "[IRC]" + ChatColor.RESET + String.format(chatEvent.getFormat(), sender, ChatColorHelper.convertIRCtoMC(message));
+					
+					for (Player recipient : chatEvent.getRecipients()){
+						recipient.sendMessage(chatMessage);
+					}
+					
+					plugin.server.getConsoleSender().sendMessage(chatMessage);
 				}
 			}
 		}
