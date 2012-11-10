@@ -4,10 +4,10 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import uk.co.jacekk.bukkit.baseplugin.v4.BasePlugin;
-import uk.co.jacekk.bukkit.baseplugin.v4.config.PluginConfig;
-import uk.co.jacekk.bukkit.baseplugin.v4.storage.DataStore;
-import uk.co.jacekk.bukkit.baseplugin.v4.storage.ListStore;
+import uk.co.jacekk.bukkit.baseplugin.v5.BasePlugin;
+import uk.co.jacekk.bukkit.baseplugin.v5.config.PluginConfig;
+import uk.co.jacekk.bukkit.baseplugin.v5.storage.DataStore;
+import uk.co.jacekk.bukkit.baseplugin.v5.storage.ListStore;
 
 public class SimpleIRC extends BasePlugin {
 	
@@ -23,7 +23,7 @@ public class SimpleIRC extends BasePlugin {
 	public void onEnable(){
 		super.onEnable(true);
 		
-		this.config = new PluginConfig(new File(this.baseDirPath + File.separator + "config.yml"), Config.values(), this.log);
+		this.config = new PluginConfig(new File(this.baseDirPath + File.separator + "config.yml"), Config.class, this.log);
 		this.aliasStore = new DataStore(new File(this.baseDirPath + File.separator + "aliases.txt"), true);
 		this.aliasStore.load();
 		

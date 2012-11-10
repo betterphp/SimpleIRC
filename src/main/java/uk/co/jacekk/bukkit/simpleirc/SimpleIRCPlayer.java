@@ -1591,4 +1591,18 @@ public class SimpleIRCPlayer implements Player {
 		}
 	}
 	
+	@Override
+	public void giveExpLevels(int levels){
+		if (this.player != null){
+			this.player.giveExpLevels(levels);
+		}
+	}
+	
+	@Override
+	public void setBedSpawnLocation(Location location, boolean flag){
+		if (this.player != null){
+			this.player.setBedSpawnLocation(location, flag);
+		}
+	}
+	
 }
