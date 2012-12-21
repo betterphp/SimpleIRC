@@ -35,6 +35,7 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Snowball;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.InventoryView.Property;
@@ -1603,6 +1604,56 @@ public class SimpleIRCPlayer implements Player {
 		if (this.player != null){
 			this.player.setBedSpawnLocation(location, flag);
 		}
+	}
+	
+	@Override
+	public boolean getCanPickupItems(){
+		if (this.player != null){
+			return this.player.getCanPickupItems();
+		}
+		
+		return false;
+	}
+	
+	@Override
+	public EntityEquipment getEquipment(){
+		if (this.player != null){
+			return this.player.getEquipment();
+		}
+		
+		return null;
+	}
+	
+	@Override
+	public boolean getRemoveWhenFarAway(){
+		if (this.player != null){
+			return this.player.getRemoveWhenFarAway();
+		}
+		
+		return false;
+	}
+	
+	@Override
+	public void setCanPickupItems(boolean pickup){
+		if (this.player != null){
+			this.player.setCanPickupItems(pickup);
+		}
+	}
+	
+	@Override
+	public void setRemoveWhenFarAway(boolean remove){
+		if (this.player != null){
+			this.player.setRemoveWhenFarAway(remove);
+		}
+	}
+	
+	@Override
+	public Location getLocation(Location location){
+		if (this.player != null){
+			this.player.getLocation(location);
+		}
+		
+		return null;
 	}
 	
 }
