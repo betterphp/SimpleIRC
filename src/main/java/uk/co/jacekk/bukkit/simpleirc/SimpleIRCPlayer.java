@@ -1656,4 +1656,25 @@ public class SimpleIRCPlayer implements Player {
 		return null;
 	}
 	
+	@Override
+	public void resetMaxHealth(){
+		if (this.player != null){
+			this.player.resetMaxHealth();
+		}
+	}
+	
+	@Override
+	public void setMaxHealth(int health){
+		if (this.player != null){
+			this.player.setMaxHealth(health);
+		}
+	}
+	
+	@Override
+	public void setTexturePack(String url){
+		if (this.player != null){
+			this.player.setTexturePack(url);
+		}
+	}
+	
 }
