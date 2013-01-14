@@ -110,7 +110,7 @@ public class SimpleIRCBot extends PircBot implements Listener {
 			String senderLower = sender.toLowerCase();
 			String playerName = (plugin.ircAliases.containsKey(senderLower)) ? plugin.ircAliases.get(senderLower) : sender; 
 			
-			plugin.server.broadcastMessage("* " + playerName + " " + action);
+			plugin.server.broadcastMessage("* IGNORE " + playerName + " " + action);
 		}
 	}
 	
