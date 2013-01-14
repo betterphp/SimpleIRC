@@ -170,7 +170,7 @@ public class SimpleIRCBot extends PircBot implements Listener {
 	
 	@Override
 	public void onDisconnect(){
-		plugin.log.warn("Disconnected from IRC, will reconnect in 5 seconds.");
+		plugin.log.warn("Disconnected from IRC, will reconnect in 10 seconds.");
 		
 		plugin.scheduler.scheduleSyncDelayedTask(plugin, new Runnable(){
 			
@@ -182,7 +182,7 @@ public class SimpleIRCBot extends PircBot implements Listener {
 				}
 			}
 			
-		}, 100L);
+		}, 200L);
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
