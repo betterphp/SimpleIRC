@@ -4,10 +4,10 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import uk.co.jacekk.bukkit.baseplugin.v7.BasePlugin;
-import uk.co.jacekk.bukkit.baseplugin.v7.config.PluginConfig;
-import uk.co.jacekk.bukkit.baseplugin.v7.storage.DataStore;
-import uk.co.jacekk.bukkit.baseplugin.v7.storage.ListStore;
+import uk.co.jacekk.bukkit.baseplugin.v8.BasePlugin;
+import uk.co.jacekk.bukkit.baseplugin.v8.config.PluginConfig;
+import uk.co.jacekk.bukkit.baseplugin.v8.storage.DataStore;
+import uk.co.jacekk.bukkit.baseplugin.v8.storage.ListStore;
 
 public class SimpleIRC extends BasePlugin {
 	
