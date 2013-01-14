@@ -69,7 +69,10 @@ public class SimpleIRCBot extends PircBot implements Listener {
 				String command = message.substring(1);
 				
 				plugin.commandSender.setMessageTarget(channel);
+				plugin.commandSender.setName(playerName);
 				plugin.server.dispatchCommand(plugin.commandSender, command);
+				plugin.commandSender.setMessageTarget(null);
+				plugin.commandSender.setName(null);
 			}else{
 				RemotePlayerChatEvent event = new RemotePlayerChatEvent(playerName, message, new HashSet<Player>(Arrays.asList(plugin.server.getOnlinePlayers())));
 				
@@ -96,6 +99,8 @@ public class SimpleIRCBot extends PircBot implements Listener {
 		if (plugin.ircOps.contains(playerName) && !plugin.gameAliases.containsKey(senderLower)){
 			plugin.commandSender.setMessageTarget(sender);
 			plugin.server.dispatchCommand(plugin.commandSender, message);
+			plugin.commandSender.setMessageTarget(null);
+			plugin.commandSender.setName(null);
 		}
 	}
 	

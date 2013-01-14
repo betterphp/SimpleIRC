@@ -26,7 +26,7 @@ public class IRCCommandSender extends BaseObject<SimpleIRC> implements RemoteCon
 		this.perm = new PermissibleBase(this);
 		this.bot = bot;
 		
-		this.name = "SimpleIRC";
+		this.name = null;
 		this.messageTarget = null;
 	}
 	
@@ -41,7 +41,7 @@ public class IRCCommandSender extends BaseObject<SimpleIRC> implements RemoteCon
 	
 	@Override
 	public String getName(){
-		return this.name;
+		return (this.name == null) ? "SimpleIRC" : this.name;
 	}
 	
 	public void setName(String name){
@@ -56,10 +56,12 @@ public class IRCCommandSender extends BaseObject<SimpleIRC> implements RemoteCon
 	@Override
 	public void sendMessage(String message){
 		if (this.messageTarget == null){
-			throw new UnsupportedOperationException("Cannot send a message until the target has been set.");
+			for (String channel : plugin.config.getStringList(Config.IRC_BOT_CHANNELS)){
+				this.bot.sendNotice(channel, ChatColorHelper.convertMCtoIRC(message));
+			}
+		}else{
+			this.bot.sendNotice(this.messageTarget, ChatColorHelper.convertMCtoIRC(message));
 		}
-		
-		this.bot.sendNotice(this.messageTarget, ChatColorHelper.convertMCtoIRC(message));
 	}
 	
 	@Override
