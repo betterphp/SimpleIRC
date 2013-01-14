@@ -118,7 +118,7 @@ public class SimpleIRCBot extends PircBot implements Listener {
 	public void onNickChange(String oldNick, String login, String hostname, String newNick){
 		if (plugin.gameAliases.containsKey(newNick.toLowerCase())){
 			for (String channel : plugin.config.getStringList(Config.IRC_BOT_CHANNELS)){
-				this.kick(channel, newNick, "Attempting to impersonate an operator");
+				this.kick(channel, newNick, "Attempting to impersonate another player");
 			}
 		}
 	}
@@ -127,7 +127,7 @@ public class SimpleIRCBot extends PircBot implements Listener {
 	public void onJoin(String channel, String sender, String login, String hostname){
 		if (!sender.equals(this.getNick())){
 			if (plugin.gameAliases.containsKey(sender.toLowerCase())){
-				this.kick(channel, sender, "Attempting to impersonate an operator");
+				this.kick(channel, sender, "Attempting to impersonate another player");
 			}
 			
 			String playerName = (plugin.ircAliases.containsKey(sender)) ? plugin.ircAliases.get(sender) : sender;
