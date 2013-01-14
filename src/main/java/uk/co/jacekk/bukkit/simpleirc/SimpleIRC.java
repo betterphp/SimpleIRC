@@ -47,6 +47,7 @@ public class SimpleIRC extends BasePlugin {
 	}
 	
 	public void onDisable(){
+		this.bot.quitServer("Plugin disabled");
 		this.bot.disconnect();
 	}
 	
