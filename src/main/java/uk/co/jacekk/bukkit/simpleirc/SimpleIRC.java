@@ -11,14 +11,15 @@ import uk.co.jacekk.bukkit.baseplugin.v8.storage.ListStore;
 
 public class SimpleIRC extends BasePlugin {
 	
-	protected SimpleIRCBot bot;
-	
 	private DataStore aliasStore;
 	
 	protected HashMap<String, String> ircAliases;
 	protected HashMap<String, String> gameAliases;
 	
-	protected ListStore enabledCommands;
+	protected ListStore ircOps;
+	
+	protected SimpleIRCBot bot;
+	protected IRCCommandSender commandSender;
 	
 	public void onEnable(){
 		super.onEnable(true);
@@ -30,15 +31,19 @@ public class SimpleIRC extends BasePlugin {
 		this.ircAliases = new HashMap<String, String>(this.aliasStore.size());
 		this.gameAliases = new HashMap<String, String>(this.aliasStore.size());
 		
-		this.enabledCommands = new ListStore(new File(this.baseDirPath + File.separator + "commands.txt"), false);
-		this.enabledCommands.load();
+		this.ircOps = new ListStore(new File(this.baseDirPath + File.separator + "irc-ops.txt"), false);
+		this.ircOps.load();
 		
 		for (Entry<String, String> entry : this.aliasStore.getAll()){
-			this.ircAliases.put(entry.getKey(), entry.getValue());
-			this.gameAliases.put(entry.getValue(), entry.getKey());
+			this.ircAliases.put(entry.getKey().toLowerCase(), entry.getValue());
+			this.gameAliases.put(entry.getValue().toLowerCase(), entry.getKey());
 		}
 		
 		this.bot = new SimpleIRCBot(this, this.config.getString(Config.IRC_BOT_NICK), this.config.getString(Config.IRC_BOT_PASSWORD), this.config.getBoolean(Config.IRC_BOT_VERBOSE));
+		this.commandSender = new IRCCommandSender(this, this.bot);
+		
+		this.permissionManager.registerPermissions(Permission.class);
+		this.commandManager.registerCommandExecutor(new OpCommandExecutor(this));
 	}
 	
 	public void onDisable(){
