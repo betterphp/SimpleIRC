@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>uk.co.jacekk.bukkit</groupId>
 	<artifactId>simpleirc</artifactId>
-	<version>0.2</version>
+	<version>0.2.1</version>
 	
 	<name>SimpleIRC</name>
 	<url>http://dev.bukkit.org/server-mods/simpleirc/</url>
