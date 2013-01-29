@@ -39,7 +39,7 @@ public class SimpleIRC extends BasePlugin {
 			this.gameAliases.put(entry.getValue().toLowerCase(), entry.getKey());
 		}
 		
-		this.bot = new SimpleIRCBot(this, this.config.getString(Config.IRC_BOT_NICK), this.config.getString(Config.IRC_BOT_PASSWORD), this.config.getBoolean(Config.IRC_BOT_VERBOSE));
+		this.bot = new SimpleIRCBot(this);
 		this.commandSender = new IRCCommandSender(this, this.bot);
 		
 		this.permissionManager.registerPermissions(Permission.class);

@@ -23,13 +23,13 @@ public class SimpleIRCBot extends PircBot implements Listener {
 	
 	private SimpleIRC plugin;
 	
-	public SimpleIRCBot(SimpleIRC plugin, String nick, String password, boolean verbose){
+	public SimpleIRCBot(SimpleIRC plugin){
 		this.plugin = plugin;
 		
-		this.setVerbose(verbose);
+		this.setVerbose(plugin.config.getBoolean(Config.IRC_BOT_VERBOSE));
 		this.setAutoNickChange(false);
-		this.setName(nick);
-		this.setLogin(nick);
+		this.setName(plugin.config.getString(Config.IRC_BOT_NICK));
+		this.setLogin(plugin.config.getString(Config.IRC_BOT_NICK));
 		this.setVersion(plugin.getName() + " " + plugin.getDescription().getVersion());
 		
 		String serverPassword = plugin.config.getString(Config.IRC_SERVER_PASSWORD);
@@ -47,6 +47,8 @@ public class SimpleIRCBot extends PircBot implements Listener {
 		}catch (IrcException e){
 			e.printStackTrace();
 		}
+		
+		String password = plugin.config.getString(Config.IRC_BOT_PASSWORD);
 		
 		if (!password.isEmpty()){
 			this.identify(password);
