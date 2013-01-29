@@ -15,6 +15,8 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.server.ServerCommandEvent;
+import org.jibble.pircbot.Colors;
 import org.jibble.pircbot.IrcException;
 import org.jibble.pircbot.NickAlreadyInUseException;
 import org.jibble.pircbot.PircBot;
@@ -224,6 +226,21 @@ public class SimpleIRCBot extends PircBot implements Listener {
 			
 			for (String channel : plugin.config.getStringList(Config.IRC_BOT_CHANNELS)){
 				SimpleIRCBot.this.sendMessage(channel, "* " + playerName + " " + parts[1]);
+			}
+		}else if (parts[0].equalsIgnoreCase("/broadcast")){
+			for (String channel : plugin.config.getStringList(Config.IRC_BOT_CHANNELS)){
+				SimpleIRCBot.this.sendMessage(channel, Colors.BLUE + "[Server]: " + parts[1]);
+			}
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void onServerCommand(ServerCommandEvent event){
+		String[] parts = event.getCommand().split(" ", 2);
+		
+		if (parts[0].equalsIgnoreCase("say")){
+			for (String channel : plugin.config.getStringList(Config.IRC_BOT_CHANNELS)){
+				SimpleIRCBot.this.sendMessage(channel, Colors.BLUE + "[Server]: " + parts[1]);
 			}
 		}
 	}
