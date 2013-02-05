@@ -1,12 +1,17 @@
 package uk.co.jacekk.bukkit.simpleirc.command;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.jibble.pircbot.User;
 
 import uk.co.jacekk.bukkit.baseplugin.v9.command.BaseCommandExecutor;
 import uk.co.jacekk.bukkit.baseplugin.v9.command.CommandHandler;
 import uk.co.jacekk.bukkit.baseplugin.v9.command.CommandTabCompletion;
 import uk.co.jacekk.bukkit.baseplugin.v9.command.SubCommandHandler;
+import uk.co.jacekk.bukkit.simpleirc.Config;
 import uk.co.jacekk.bukkit.simpleirc.Permission;
 import uk.co.jacekk.bukkit.simpleirc.SimpleIRC;
 
@@ -41,7 +46,22 @@ public class IRCCommandExecutor extends BaseCommandExecutor<SimpleIRC> {
 		}
 	}
 	
+	public List<String> getChannelList(CommandSender sender, String[] args){
+		return plugin.config.getStringList(Config.IRC_BOT_CHANNELS);
+	}
+	
+	public List<String> getNickList(CommandSender sender, String[] args){
+		ArrayList<String> nicks = new ArrayList<String>();
+		
+		for (User user : plugin.bot.getUsers(args[0])){
+			nicks.add(user.getNick());
+		}
+		
+		return nicks;
+	}
+	
 	@SubCommandHandler(parent = "irc", name = "kick")
+	@CommandTabCompletion({"[getChannelList]", "[getNickList]"})
 	public void ircKick(CommandSender sender, String label, String[] args){
 		if (!Permission.KICK.has(sender)){
 			sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
@@ -69,6 +89,7 @@ public class IRCCommandExecutor extends BaseCommandExecutor<SimpleIRC> {
 	}
 	
 	@SubCommandHandler(parent = "irc", name = "ban")
+	@CommandTabCompletion({"[getChannelList]"})
 	public void ircBan(CommandSender sender, String label, String[] args){
 		if (!Permission.BAN.has(sender)){
 			sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
@@ -86,6 +107,7 @@ public class IRCCommandExecutor extends BaseCommandExecutor<SimpleIRC> {
 	}
 	
 	@SubCommandHandler(parent = "irc", name = "op")
+	@CommandTabCompletion({"[getChannelList]", "[getNickList]"})
 	public void ircOp(CommandSender sender, String label, String[] args){
 		if (!Permission.OP.has(sender)){
 			sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
@@ -103,6 +125,7 @@ public class IRCCommandExecutor extends BaseCommandExecutor<SimpleIRC> {
 	}
 	
 	@SubCommandHandler(parent = "irc", name = "deop")
+	@CommandTabCompletion({"[getChannelList]", "[getNickList]"})
 	public void ircDeop(CommandSender sender, String label, String[] args){
 		if (!Permission.OP.has(sender)){
 			sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
@@ -120,6 +143,7 @@ public class IRCCommandExecutor extends BaseCommandExecutor<SimpleIRC> {
 	}
 	
 	@SubCommandHandler(parent = "irc", name = "voice")
+	@CommandTabCompletion({"[getChannelList]", "[getNickList]"})
 	public void ircVoice(CommandSender sender, String label, String[] args){
 		if (!Permission.VOICE.has(sender)){
 			sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
@@ -137,6 +161,7 @@ public class IRCCommandExecutor extends BaseCommandExecutor<SimpleIRC> {
 	}
 	
 	@SubCommandHandler(parent = "irc", name = "devoice")
+	@CommandTabCompletion({"[getChannelList]", "[getNickList]"})
 	public void ircDevoice(CommandSender sender, String label, String[] args){
 		if (!Permission.VOICE.has(sender)){
 			sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
