@@ -9,6 +9,7 @@ import uk.co.jacekk.bukkit.baseplugin.v8.config.PluginConfig;
 import uk.co.jacekk.bukkit.baseplugin.v8.storage.DataStore;
 import uk.co.jacekk.bukkit.baseplugin.v8.storage.ListStore;
 import uk.co.jacekk.bukkit.simpleirc.bot.SimpleIRCBot;
+import uk.co.jacekk.bukkit.simpleirc.command.IRCCommandExecutor;
 import uk.co.jacekk.bukkit.simpleirc.command.OpCommandExecutor;
 
 public class SimpleIRC extends BasePlugin {
@@ -20,7 +21,7 @@ public class SimpleIRC extends BasePlugin {
 	
 	public ListStore ircOps;
 	
-	protected SimpleIRCBot bot;
+	public SimpleIRCBot bot;
 	
 	public void onEnable(){
 		super.onEnable(true);
@@ -43,7 +44,9 @@ public class SimpleIRC extends BasePlugin {
 		this.bot = new SimpleIRCBot(this);
 		
 		this.permissionManager.registerPermissions(Permission.class);
+		
 		this.commandManager.registerCommandExecutor(new OpCommandExecutor(this));
+		this.commandManager.registerCommandExecutor(new IRCCommandExecutor(this));
 	}
 	
 	public void onDisable(){
