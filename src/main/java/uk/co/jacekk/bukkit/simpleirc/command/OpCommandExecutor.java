@@ -1,4 +1,4 @@
-package uk.co.jacekk.bukkit.simpleirc;
+package uk.co.jacekk.bukkit.simpleirc.command;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -6,6 +6,8 @@ import org.bukkit.command.CommandSender;
 import uk.co.jacekk.bukkit.baseplugin.v8.command.BaseCommandExecutor;
 import uk.co.jacekk.bukkit.baseplugin.v8.command.CommandHandler;
 import uk.co.jacekk.bukkit.baseplugin.v8.command.CommandTabCompletion;
+import uk.co.jacekk.bukkit.simpleirc.Permission;
+import uk.co.jacekk.bukkit.simpleirc.SimpleIRC;
 
 public class OpCommandExecutor extends BaseCommandExecutor<SimpleIRC> {
 	

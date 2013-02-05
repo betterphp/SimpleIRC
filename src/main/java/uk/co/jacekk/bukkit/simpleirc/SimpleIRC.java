@@ -8,18 +8,19 @@ import uk.co.jacekk.bukkit.baseplugin.v8.BasePlugin;
 import uk.co.jacekk.bukkit.baseplugin.v8.config.PluginConfig;
 import uk.co.jacekk.bukkit.baseplugin.v8.storage.DataStore;
 import uk.co.jacekk.bukkit.baseplugin.v8.storage.ListStore;
+import uk.co.jacekk.bukkit.simpleirc.bot.SimpleIRCBot;
+import uk.co.jacekk.bukkit.simpleirc.command.OpCommandExecutor;
 
 public class SimpleIRC extends BasePlugin {
 	
 	private DataStore aliasStore;
 	
-	protected HashMap<String, String> ircAliases;
-	protected HashMap<String, String> gameAliases;
+	public HashMap<String, String> ircAliases;
+	public HashMap<String, String> gameAliases;
 	
-	protected ListStore ircOps;
+	public ListStore ircOps;
 	
 	protected SimpleIRCBot bot;
-	protected IRCCommandSender commandSender;
 	
 	public void onEnable(){
 		super.onEnable(true);
@@ -40,7 +41,6 @@ public class SimpleIRC extends BasePlugin {
 		}
 		
 		this.bot = new SimpleIRCBot(this);
-		this.commandSender = new IRCCommandSender(this, this.bot);
 		
 		this.permissionManager.registerPermissions(Permission.class);
 		this.commandManager.registerCommandExecutor(new OpCommandExecutor(this));

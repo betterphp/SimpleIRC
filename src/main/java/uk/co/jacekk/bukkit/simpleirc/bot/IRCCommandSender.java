@@ -1,4 +1,4 @@
-package uk.co.jacekk.bukkit.simpleirc;
+package uk.co.jacekk.bukkit.simpleirc.bot;
 
 import java.util.Set;
 
@@ -11,6 +11,8 @@ import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.plugin.Plugin;
 
 import uk.co.jacekk.bukkit.baseplugin.v8.BaseObject;
+import uk.co.jacekk.bukkit.simpleirc.ChatColorHelper;
+import uk.co.jacekk.bukkit.simpleirc.SimpleIRC;
 
 public class IRCCommandSender extends BaseObject<SimpleIRC> implements RemoteConsoleCommandSender {
 	
