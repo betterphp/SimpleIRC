@@ -4,10 +4,10 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import uk.co.jacekk.bukkit.baseplugin.v8.BasePlugin;
-import uk.co.jacekk.bukkit.baseplugin.v8.config.PluginConfig;
-import uk.co.jacekk.bukkit.baseplugin.v8.storage.DataStore;
-import uk.co.jacekk.bukkit.baseplugin.v8.storage.ListStore;
+import uk.co.jacekk.bukkit.baseplugin.v9.BasePlugin;
+import uk.co.jacekk.bukkit.baseplugin.v9.config.PluginConfig;
+import uk.co.jacekk.bukkit.baseplugin.v9.storage.DataStore;
+import uk.co.jacekk.bukkit.baseplugin.v9.storage.ListStore;
 import uk.co.jacekk.bukkit.simpleirc.bot.SimpleIRCBot;
 import uk.co.jacekk.bukkit.simpleirc.command.IRCCommandExecutor;
 import uk.co.jacekk.bukkit.simpleirc.command.OpCommandExecutor;
