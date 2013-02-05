@@ -209,6 +209,10 @@ public class SimpleIRCBot extends PircBot implements Listener {
 						playerName = plugin.gameAliases.get(playerName);
 					}
 					
+					if (plugin.config.getBoolean(Config.IRC_BOT_PREVENT_PINGS)){
+						playerName = playerName.substring(0, 1) + "\u200B" + playerName.substring(1);
+					}
+					
 					String message = ChatColorHelper.convertMCtoIRC(String.format(event.getFormat(), playerName, event.getMessage()));
 					
 					for (String channel : plugin.config.getStringList(Config.IRC_BOT_CHANNELS)){
@@ -230,6 +234,10 @@ public class SimpleIRCBot extends PircBot implements Listener {
 		if (parts[0].equalsIgnoreCase("/me")){
 			if (plugin.gameAliases.containsKey(playerName)){
 				playerName = plugin.gameAliases.get(playerName);
+			}
+			
+			if (plugin.config.getBoolean(Config.IRC_BOT_PREVENT_PINGS)){
+				playerName = playerName.substring(0, 1) + "\u200B" + playerName.substring(1);
 			}
 			
 			for (String channel : plugin.config.getStringList(Config.IRC_BOT_CHANNELS)){
