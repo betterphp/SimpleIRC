@@ -25,8 +25,8 @@ public class IRCCommandExecutor extends BaseCommandExecutor<SimpleIRC> {
 	}
 	
 	@CommandHandler(names = {"irc"}, description = "Allowes a player to manage the IRC channel", usage = "[action] <args>")
-	@CommandTabCompletion({"kick|ban|op|deop|voice|devoice"})
-	public void ircop(CommandSender sender, String label, String[] args){
+	@CommandTabCompletion({"kick|ban|op|deop|voice|devoice|leave|join|disconnect|connect"})
+	public void irc(CommandSender sender, String label, String[] args){
 		sender.sendMessage(ChatColor.RED + "Usage: /" + label + " <action> <args>");
 		sender.sendMessage(ChatColor.RED + "Actions:");
 		
