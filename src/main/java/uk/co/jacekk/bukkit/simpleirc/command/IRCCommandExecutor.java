@@ -1,10 +1,13 @@
 package uk.co.jacekk.bukkit.simpleirc.command;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.jibble.pircbot.IrcException;
+import org.jibble.pircbot.NickAlreadyInUseException;
 import org.jibble.pircbot.User;
 
 import uk.co.jacekk.bukkit.baseplugin.v9.command.BaseCommandExecutor;
@@ -43,6 +46,22 @@ public class IRCCommandExecutor extends BaseCommandExecutor<SimpleIRC> {
 		if (Permission.VOICE.has(sender)){
 			sender.sendMessage(ChatColor.RED + "  voice - Gives voice to a user");
 			sender.sendMessage(ChatColor.RED + "  devoice - Takes voice from a user");
+		}
+		
+		if (Permission.LEAVE.has(sender)){
+			sender.sendMessage(ChatColor.RED + "  leave - Leaves all channels");
+		}
+		
+		if (Permission.JOIN.has(sender)){
+			sender.sendMessage(ChatColor.RED + "  join - Joins the configured channels");
+		}
+		
+		if (Permission.DISCONNECT.has(sender)){
+			sender.sendMessage(ChatColor.RED + "  disconnect - Disconnects from the server");
+		}
+		
+		if (Permission.CONNECT.has(sender)){
+			sender.sendMessage(ChatColor.RED + "  connect - Connects to the server");
 		}
 	}
 	
@@ -176,6 +195,85 @@ public class IRCCommandExecutor extends BaseCommandExecutor<SimpleIRC> {
 		plugin.bot.deVoice(args[0], args[1]);
 		
 		sender.sendMessage(ChatColor.GREEN + args[1] + " no longer has voice in " + args[0]);
+	}
+	
+	@SubCommandHandler(parent = "irc", name = "leave")
+	public void ircLeave(CommandSender sender, String label, String[] args){
+		if (!Permission.LEAVE.has(sender)){
+			sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
+			return;
+		}
+		
+		for (String channel : plugin.config.getStringList(Config.IRC_BOT_CHANNELS)){
+			plugin.bot.partChannel(channel);
+		}
+		
+		sender.sendMessage(ChatColor.GREEN + "Left all channels");
+	}
+	
+	@SubCommandHandler(parent = "irc", name = "join")
+	public void ircJoin(CommandSender sender, String label, String[] args){
+		if (!Permission.JOIN.has(sender)){
+			sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
+			return;
+		}
+		
+		for (String channel : plugin.config.getStringList(Config.IRC_BOT_CHANNELS)){
+			plugin.bot.joinChannel(channel);
+		}
+		
+		sender.sendMessage(ChatColor.GREEN + "Joined all channels");
+	}
+	
+	@SubCommandHandler(parent = "irc", name = "disconnect")
+	public void ircDisconnect(CommandSender sender, String label, String[] args){
+		if (!Permission.DISCONNECT.has(sender)){
+			sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
+			return;
+		}
+		
+		plugin.bot.connected = false;
+		plugin.bot.disconnect();
+		
+		sender.sendMessage(ChatColor.GREEN + "Disconnected from IRC server");
+	}
+	
+	@SubCommandHandler(parent = "irc", name = "connect")
+	public void ircConnect(CommandSender sender, String label, String[] args){
+		if (!Permission.CONNECT.has(sender)){
+			sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
+			return;
+		}
+		
+		String serverPassword = plugin.config.getString(Config.IRC_SERVER_PASSWORD);
+		
+		try{
+			if (serverPassword.isEmpty()){
+				plugin.bot.connect(plugin.config.getString(Config.IRC_SERVER_ADDRESS), plugin.config.getInt(Config.IRC_SERVER_PORT));
+			}else{
+				plugin.bot.connect(plugin.config.getString(Config.IRC_SERVER_ADDRESS), plugin.config.getInt(Config.IRC_SERVER_PORT), serverPassword);
+			}
+		}catch (NickAlreadyInUseException e){
+			plugin.log.fatal("The IRC nick you chose is already in use, it's probably a good idea to pick a unique one and register it with NickServ if the server allows it.");
+		}catch (IOException e){
+			e.printStackTrace();
+		}catch (IrcException e){
+			e.printStackTrace();
+		}
+		
+		plugin.bot.connected = true;
+		
+		String password = plugin.config.getString(Config.IRC_BOT_PASSWORD);
+		
+		if (!password.isEmpty()){
+			plugin.bot.identify(password);
+		}
+		
+		for (String channel : plugin.config.getStringList(Config.IRC_BOT_CHANNELS)){
+			plugin.bot.joinChannel(channel);
+		}
+		
+		sender.sendMessage(ChatColor.GREEN + "Connected to IRC server");
 	}
 	
 }

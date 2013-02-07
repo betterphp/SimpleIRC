@@ -30,6 +30,7 @@ public class SimpleIRCBot extends PircBot implements Listener {
 	
 	private SimpleIRC plugin;
 	private IRCCommandSender commandSender;
+	public boolean connected;
 	
 	public SimpleIRCBot(SimpleIRC plugin){
 		this.plugin = plugin;
@@ -57,6 +58,8 @@ public class SimpleIRCBot extends PircBot implements Listener {
 		}catch (IrcException e){
 			e.printStackTrace();
 		}
+		
+		this.connected = true;
 		
 		String password = plugin.config.getString(Config.IRC_BOT_PASSWORD);
 		
@@ -182,19 +185,21 @@ public class SimpleIRCBot extends PircBot implements Listener {
 	
 	@Override
 	public void onDisconnect(){
-		plugin.log.warn("Disconnected from IRC, will reconnect in 10 seconds.");
-		
-		plugin.scheduler.scheduleSyncDelayedTask(plugin, new Runnable(){
+		if (this.connected){
+			plugin.log.warn("Disconnected from IRC, will reconnect in 10 seconds.");
 			
-			public void run(){
-				try{
-					SimpleIRCBot.this.reconnect();
-				}catch (Exception e){
-					e.printStackTrace();
+			plugin.scheduler.scheduleSyncDelayedTask(plugin, new Runnable(){
+				
+				public void run(){
+					try{
+						SimpleIRCBot.this.reconnect();
+					}catch (Exception e){
+						e.printStackTrace();
+					}
 				}
-			}
-			
-		}, 200L);
+				
+			}, 200L);
+		}
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
