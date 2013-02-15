@@ -10,7 +10,7 @@ import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.plugin.Plugin;
 
-import uk.co.jacekk.bukkit.baseplugin.v9.BaseObject;
+import uk.co.jacekk.bukkit.baseplugin.v9_1.BaseObject;
 import uk.co.jacekk.bukkit.simpleirc.ChatColorHelper;
 import uk.co.jacekk.bukkit.simpleirc.SimpleIRC;
 

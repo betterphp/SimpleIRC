@@ -10,10 +10,10 @@ import org.jibble.pircbot.IrcException;
 import org.jibble.pircbot.NickAlreadyInUseException;
 import org.jibble.pircbot.User;
 
-import uk.co.jacekk.bukkit.baseplugin.v9.command.BaseCommandExecutor;
-import uk.co.jacekk.bukkit.baseplugin.v9.command.CommandHandler;
-import uk.co.jacekk.bukkit.baseplugin.v9.command.CommandTabCompletion;
-import uk.co.jacekk.bukkit.baseplugin.v9.command.SubCommandHandler;
+import uk.co.jacekk.bukkit.baseplugin.v9_1.command.BaseCommandExecutor;
+import uk.co.jacekk.bukkit.baseplugin.v9_1.command.CommandHandler;
+import uk.co.jacekk.bukkit.baseplugin.v9_1.command.CommandTabCompletion;
+import uk.co.jacekk.bukkit.baseplugin.v9_1.command.SubCommandHandler;
 import uk.co.jacekk.bukkit.simpleirc.Config;
 import uk.co.jacekk.bukkit.simpleirc.Permission;
 import uk.co.jacekk.bukkit.simpleirc.SimpleIRC;
