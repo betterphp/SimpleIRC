@@ -16,6 +16,11 @@
 			<id>bukkit-repo</id>
 			<url>http://repo.bukkit.org/content/groups/public/</url>
 		</repository>
+		
+		<repository>
+			<id>jacekk-repo</id>
+			<url>http://bukkit.jacekk.co.uk:8000/plugin/repository/everything/</url>
+		</repository>
 	</repositories>
 	
 	<dependencies>
