@@ -6,9 +6,10 @@ import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.jibble.pircbot.IrcException;
-import org.jibble.pircbot.NickAlreadyInUseException;
-import org.jibble.pircbot.User;
+import org.pircbotx.Channel;
+import org.pircbotx.User;
+import org.pircbotx.exception.IrcException;
+import org.pircbotx.exception.NickAlreadyInUseException;
 
 import uk.co.jacekk.bukkit.baseplugin.command.BaseCommandExecutor;
 import uk.co.jacekk.bukkit.baseplugin.command.CommandHandler;
@@ -72,7 +73,7 @@ public class IRCCommandExecutor extends BaseCommandExecutor<SimpleIRC> {
 	public List<String> getNickList(CommandSender sender, String[] args){
 		ArrayList<String> nicks = new ArrayList<String>();
 		
-		for (User user : plugin.bot.getUsers(args[0])){
+		for (User user : plugin.bot.getUsers(plugin.bot.getChannel(args[0]))){
 			nicks.add(user.getNick());
 		}
 		
@@ -92,6 +93,9 @@ public class IRCCommandExecutor extends BaseCommandExecutor<SimpleIRC> {
 			return;
 		}
 		
+		Channel channel = plugin.bot.getChannel(args[0]);
+		User user = plugin.bot.getUser(args[1]);
+		
 		if (args.length > 2){
 			String reason = args[2];
 			
@@ -99,9 +103,9 @@ public class IRCCommandExecutor extends BaseCommandExecutor<SimpleIRC> {
 				reason += " " + args[i];
 			}
 			
-			plugin.bot.kick(args[0], args[1], reason);
+			plugin.bot.kick(channel, user, reason);
 		}else{
-			plugin.bot.kick(args[0], args[1]);
+			plugin.bot.kick(channel, user);
 		}
 		
 		sender.sendMessage(ChatColor.GREEN + args[1] + " has been kicked from " + args[0]);
@@ -120,7 +124,9 @@ public class IRCCommandExecutor extends BaseCommandExecutor<SimpleIRC> {
 			return;
 		}
 		
-		plugin.bot.ban(args[0], args[1]);
+		Channel channel = plugin.bot.getChannel(args[0]);
+		
+		plugin.bot.ban(channel, args[1]);
 		
 		sender.sendMessage(ChatColor.GREEN + args[1] + " has been banned from " + args[0]);
 	}
@@ -138,7 +144,10 @@ public class IRCCommandExecutor extends BaseCommandExecutor<SimpleIRC> {
 			return;
 		}
 		
-		plugin.bot.op(args[0], args[1]);
+		Channel channel = plugin.bot.getChannel(args[0]);
+		User user = plugin.bot.getUser(args[1]);
+		
+		plugin.bot.op(channel, user);
 		
 		sender.sendMessage(ChatColor.GREEN + args[1] + " has been oped in " + args[0]);
 	}
@@ -156,7 +165,10 @@ public class IRCCommandExecutor extends BaseCommandExecutor<SimpleIRC> {
 			return;
 		}
 		
-		plugin.bot.deOp(args[0], args[1]);
+		Channel channel = plugin.bot.getChannel(args[0]);
+		User user = plugin.bot.getUser(args[1]);
+		
+		plugin.bot.deOp(channel, user);
 		
 		sender.sendMessage(ChatColor.GREEN + args[1] + " has been deoped in " + args[0]);
 	}
@@ -174,7 +186,10 @@ public class IRCCommandExecutor extends BaseCommandExecutor<SimpleIRC> {
 			return;
 		}
 		
-		plugin.bot.voice(args[0], args[1]);
+		Channel channel = plugin.bot.getChannel(args[0]);
+		User user = plugin.bot.getUser(args[1]);
+		
+		plugin.bot.voice(channel, user);
 		
 		sender.sendMessage(ChatColor.GREEN + args[1] + " has been given voice in " + args[0]);
 	}
@@ -192,7 +207,10 @@ public class IRCCommandExecutor extends BaseCommandExecutor<SimpleIRC> {
 			return;
 		}
 		
-		plugin.bot.deVoice(args[0], args[1]);
+		Channel channel = plugin.bot.getChannel(args[0]);
+		User user = plugin.bot.getUser(args[1]);
+		
+		plugin.bot.deVoice(channel, user);
 		
 		sender.sendMessage(ChatColor.GREEN + args[1] + " no longer has voice in " + args[0]);
 	}
@@ -204,7 +222,7 @@ public class IRCCommandExecutor extends BaseCommandExecutor<SimpleIRC> {
 			return;
 		}
 		
-		for (String channel : plugin.config.getStringList(Config.IRC_BOT_CHANNELS)){
+		for (Channel channel : plugin.bot.getChannels()){
 			plugin.bot.partChannel(channel);
 		}
 		

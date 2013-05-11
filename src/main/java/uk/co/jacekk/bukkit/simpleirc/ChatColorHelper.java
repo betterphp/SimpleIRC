@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import org.bukkit.ChatColor;
-import org.jibble.pircbot.Colors;
+import org.pircbotx.Colors;
 
 public class ChatColorHelper {
 	
