@@ -1,32 +1,15 @@
 package uk.co.jacekk.bukkit.simpleirc.bot;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.concurrent.Callable;
 
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.server.ServerCommandEvent;
 import org.pircbotx.Channel;
-import org.pircbotx.Colors;
 import org.pircbotx.PircBotX;
 import org.pircbotx.exception.IrcException;
 import org.pircbotx.exception.NickAlreadyInUseException;
 
-import uk.co.jacekk.bukkit.simpleirc.ChatColorHelper;
 import uk.co.jacekk.bukkit.simpleirc.Config;
-import uk.co.jacekk.bukkit.simpleirc.RemotePlayerChatEvent;
 import uk.co.jacekk.bukkit.simpleirc.SimpleIRC;
 
 public class SimpleIRCBot extends PircBotX implements Listener {

@@ -20,7 +20,6 @@ import org.pircbotx.hooks.events.PrivateMessageEvent;
 import org.pircbotx.hooks.events.QuitEvent;
 
 import uk.co.jacekk.bukkit.simpleirc.ChatColorHelper;
-import uk.co.jacekk.bukkit.simpleirc.Config;
 import uk.co.jacekk.bukkit.simpleirc.RemotePlayerChatEvent;
 import uk.co.jacekk.bukkit.simpleirc.SimpleIRC;
 
@@ -47,7 +46,7 @@ public class IRCListener extends ListenerAdapter<SimpleIRCBot> implements Listen
 		
 		String message = event.getMessage();
 		String senderLower = sender.toLowerCase();
-		String playerName = (plugin.ircAliases.containsKey(senderLower)) ? plugin.ircAliases.get(senderLower) : sender;  
+		String playerName = (plugin.ircAliases.containsKey(senderLower)) ? plugin.ircAliases.get(senderLower) : sender;
 		
 		if (message.startsWith("!") && plugin.ircOps.contains(playerName) && !plugin.gameAliases.containsKey(senderLower)){
 			String command = message.substring(1);
