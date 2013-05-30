@@ -8,6 +8,7 @@ import uk.co.jacekk.bukkit.baseplugin.BasePlugin;
 import uk.co.jacekk.bukkit.baseplugin.config.PluginConfig;
 import uk.co.jacekk.bukkit.baseplugin.storage.DataStore;
 import uk.co.jacekk.bukkit.baseplugin.storage.ListStore;
+import uk.co.jacekk.bukkit.simpleirc.bot.ServerListener;
 import uk.co.jacekk.bukkit.simpleirc.bot.SimpleIRCBot;
 import uk.co.jacekk.bukkit.simpleirc.command.IRCCommandExecutor;
 import uk.co.jacekk.bukkit.simpleirc.command.OpCommandExecutor;
@@ -42,11 +43,14 @@ public class SimpleIRC extends BasePlugin {
 		}
 		
 		this.bot = new SimpleIRCBot(this);
+		this.bot.connect();
 		
 		this.permissionManager.registerPermissions(Permission.class);
 		
 		this.commandManager.registerCommandExecutor(new OpCommandExecutor(this));
 		this.commandManager.registerCommandExecutor(new IRCCommandExecutor(this));
+		
+		this.pluginManager.registerEvents(new ServerListener(this, this.bot), this);
 	}
 	
 	public void onDisable(){

@@ -15,7 +15,6 @@ import uk.co.jacekk.bukkit.simpleirc.SimpleIRC;
 public class SimpleIRCBot extends PircBotX implements Listener {
 	
 	private SimpleIRC plugin;
-	public boolean connected;
 	
 	public SimpleIRCBot(SimpleIRC plugin){
 		this.plugin = plugin;
@@ -27,6 +26,10 @@ public class SimpleIRCBot extends PircBotX implements Listener {
 		this.setLogin(plugin.config.getString(Config.IRC_BOT_NICK));
 		this.setVersion(plugin.getName() + " " + plugin.getDescription().getVersion());
 		
+		this.listenerManager.addListener(new IRCListener(plugin, this));
+	}
+	
+	public void connect(){
 		String serverPassword = plugin.config.getString(Config.IRC_SERVER_PASSWORD);
 		
 		try{
@@ -43,8 +46,6 @@ public class SimpleIRCBot extends PircBotX implements Listener {
 			e.printStackTrace();
 		}
 		
-		this.connected = true;
-		
 		String password = plugin.config.getString(Config.IRC_BOT_PASSWORD);
 		
 		if (!password.isEmpty()){
@@ -54,8 +55,10 @@ public class SimpleIRCBot extends PircBotX implements Listener {
 		for (String channel : plugin.config.getStringList(Config.IRC_BOT_CHANNELS)){
 			this.joinChannel(channel);
 		}
-		
-		plugin.pluginManager.registerEvents(this, plugin);
+	}
+	
+	public void disconnect(){
+		super.disconnect();
 	}
 	
 	public void sendMessage(Collection<Channel> channels, String message){

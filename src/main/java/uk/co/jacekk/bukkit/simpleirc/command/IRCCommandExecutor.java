@@ -1,6 +1,5 @@
 package uk.co.jacekk.bukkit.simpleirc.command;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,8 +7,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.pircbotx.Channel;
 import org.pircbotx.User;
-import org.pircbotx.exception.IrcException;
-import org.pircbotx.exception.NickAlreadyInUseException;
 
 import uk.co.jacekk.bukkit.baseplugin.command.BaseCommandExecutor;
 import uk.co.jacekk.bukkit.baseplugin.command.CommandHandler;
@@ -250,7 +247,6 @@ public class IRCCommandExecutor extends BaseCommandExecutor<SimpleIRC> {
 			return;
 		}
 		
-		plugin.bot.connected = false;
 		plugin.bot.disconnect();
 		
 		sender.sendMessage(ChatColor.GREEN + "Disconnected from IRC server");
@@ -263,33 +259,7 @@ public class IRCCommandExecutor extends BaseCommandExecutor<SimpleIRC> {
 			return;
 		}
 		
-		String serverPassword = plugin.config.getString(Config.IRC_SERVER_PASSWORD);
-		
-		try{
-			if (serverPassword.isEmpty()){
-				plugin.bot.connect(plugin.config.getString(Config.IRC_SERVER_ADDRESS), plugin.config.getInt(Config.IRC_SERVER_PORT));
-			}else{
-				plugin.bot.connect(plugin.config.getString(Config.IRC_SERVER_ADDRESS), plugin.config.getInt(Config.IRC_SERVER_PORT), serverPassword);
-			}
-		}catch (NickAlreadyInUseException e){
-			plugin.log.fatal("The IRC nick you chose is already in use, it's probably a good idea to pick a unique one and register it with NickServ if the server allows it.");
-		}catch (IOException e){
-			e.printStackTrace();
-		}catch (IrcException e){
-			e.printStackTrace();
-		}
-		
-		plugin.bot.connected = true;
-		
-		String password = plugin.config.getString(Config.IRC_BOT_PASSWORD);
-		
-		if (!password.isEmpty()){
-			plugin.bot.identify(password);
-		}
-		
-		for (String channel : plugin.config.getStringList(Config.IRC_BOT_CHANNELS)){
-			plugin.bot.joinChannel(channel);
-		}
+		plugin.bot.connect();
 		
 		sender.sendMessage(ChatColor.GREEN + "Connected to IRC server");
 	}
