@@ -20,6 +20,7 @@ import org.pircbotx.hooks.events.PrivateMessageEvent;
 import org.pircbotx.hooks.events.QuitEvent;
 
 import uk.co.jacekk.bukkit.simpleirc.ChatColorHelper;
+import uk.co.jacekk.bukkit.simpleirc.Config;
 import uk.co.jacekk.bukkit.simpleirc.RemotePlayerChatEvent;
 import uk.co.jacekk.bukkit.simpleirc.SimpleIRC;
 
@@ -37,6 +38,7 @@ public class IRCListener extends ListenerAdapter<SimpleIRCBot> implements Listen
 	
 	@Override
 	public void onMessage(MessageEvent<SimpleIRCBot> event){
+		Channel channel = event.getChannel();
 		User user = event.getUser();
 		String sender = user.getNick();
 		
@@ -48,7 +50,7 @@ public class IRCListener extends ListenerAdapter<SimpleIRCBot> implements Listen
 		String senderLower = sender.toLowerCase();
 		String playerName = (plugin.ircAliases.containsKey(senderLower)) ? plugin.ircAliases.get(senderLower) : sender;
 		
-		if (message.startsWith("!") && plugin.ircOps.contains(playerName) && !plugin.gameAliases.containsKey(senderLower)){
+		if (message.startsWith("!") && !plugin.gameAliases.containsKey(senderLower) && channel.getOps().contains(user)){
 			String command = message.substring(1);
 			
 			this.commandSender.setMessageTarget(event.getChannel().getName());
@@ -75,16 +77,23 @@ public class IRCListener extends ListenerAdapter<SimpleIRCBot> implements Listen
 	
 	@Override
 	public void onPrivateMessage(PrivateMessageEvent<SimpleIRCBot> event){
-		String sender = event.getUser().getNick();
+		User user = event.getUser();
+		String sender = user.getNick();
 		String message = event.getMessage();
 		String senderLower = sender.toLowerCase();
-		String playerName = (plugin.ircAliases.containsKey(senderLower)) ? plugin.ircAliases.get(senderLower) : sender;  
+		String playerName = (plugin.ircAliases.containsKey(senderLower)) ? plugin.ircAliases.get(senderLower) : sender;
 		
-		if (plugin.ircOps.contains(playerName) && !plugin.gameAliases.containsKey(senderLower)){
-			this.commandSender.setMessageTarget(sender);
-			plugin.server.dispatchCommand(this.commandSender, message);
-			this.commandSender.setMessageTarget(null);
-			this.commandSender.setName(null);
+		if (!plugin.gameAliases.containsKey(senderLower)){
+			for (Channel channel : this.plugin.bot.getChannels()){
+				if (channel.getOps().contains(user)){
+					this.commandSender.setMessageTarget(sender);
+					plugin.server.dispatchCommand(this.commandSender, message);
+					this.commandSender.setMessageTarget(null);
+					this.commandSender.setName(null);
+					
+					return;
+				}
+			}
 		}
 	}
 	

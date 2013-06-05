@@ -7,11 +7,9 @@ import java.util.Map.Entry;
 import uk.co.jacekk.bukkit.baseplugin.BasePlugin;
 import uk.co.jacekk.bukkit.baseplugin.config.PluginConfig;
 import uk.co.jacekk.bukkit.baseplugin.storage.DataStore;
-import uk.co.jacekk.bukkit.baseplugin.storage.ListStore;
 import uk.co.jacekk.bukkit.simpleirc.bot.ServerListener;
 import uk.co.jacekk.bukkit.simpleirc.bot.SimpleIRCBot;
 import uk.co.jacekk.bukkit.simpleirc.command.IRCCommandExecutor;
-import uk.co.jacekk.bukkit.simpleirc.command.OpCommandExecutor;
 
 public class SimpleIRC extends BasePlugin {
 	
@@ -19,8 +17,6 @@ public class SimpleIRC extends BasePlugin {
 	
 	public HashMap<String, String> ircAliases;
 	public HashMap<String, String> gameAliases;
-	
-	public ListStore ircOps;
 	
 	public SimpleIRCBot bot;
 	
@@ -34,9 +30,6 @@ public class SimpleIRC extends BasePlugin {
 		this.ircAliases = new HashMap<String, String>(this.aliasStore.size());
 		this.gameAliases = new HashMap<String, String>(this.aliasStore.size());
 		
-		this.ircOps = new ListStore(new File(this.baseDirPath + File.separator + "irc-ops.txt"), false);
-		this.ircOps.load();
-		
 		for (Entry<String, String> entry : this.aliasStore.getAll()){
 			this.ircAliases.put(entry.getKey().toLowerCase(), entry.getValue());
 			this.gameAliases.put(entry.getValue().toLowerCase(), entry.getKey());
@@ -47,7 +40,6 @@ public class SimpleIRC extends BasePlugin {
 		
 		this.permissionManager.registerPermissions(Permission.class);
 		
-		this.commandManager.registerCommandExecutor(new OpCommandExecutor(this));
 		this.commandManager.registerCommandExecutor(new IRCCommandExecutor(this));
 		
 		this.pluginManager.registerEvents(new ServerListener(this, this.bot), this);
