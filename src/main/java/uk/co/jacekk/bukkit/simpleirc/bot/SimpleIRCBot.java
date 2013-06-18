@@ -26,7 +26,7 @@ public class SimpleIRCBot extends PircBotX implements Listener {
 		this.setLogin(plugin.config.getString(Config.IRC_BOT_NICK));
 		this.setVersion(plugin.getName() + " " + plugin.getDescription().getVersion());
 		
-		this.listenerManager.addListener(new IRCListener(plugin, this));
+		this.getListenerManager().addListener(new IRCListener(plugin, this));
 	}
 	
 	public void connect(){
