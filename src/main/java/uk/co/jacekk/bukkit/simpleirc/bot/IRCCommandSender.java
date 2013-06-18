@@ -1,5 +1,7 @@
 package uk.co.jacekk.bukkit.simpleirc.bot;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Server;
@@ -17,6 +19,7 @@ import uk.co.jacekk.bukkit.simpleirc.SimpleIRC;
 public class IRCCommandSender extends BaseObject<SimpleIRC> implements RemoteConsoleCommandSender {
 	
 	private PermissibleBase perm;
+	private List<String> excludedPermissions;
 	private SimpleIRCBot bot;
 	
 	private String name;
@@ -26,6 +29,7 @@ public class IRCCommandSender extends BaseObject<SimpleIRC> implements RemoteCon
 		super(plugin);
 		
 		this.perm = new PermissibleBase(this);
+		this.excludedPermissions = Arrays.asList("bukkit.broadcast", "bukkit.broadcast.admin", "bukkit.broadcast.user");
 		this.bot = bot;
 		
 		this.name = null;
@@ -58,7 +62,7 @@ public class IRCCommandSender extends BaseObject<SimpleIRC> implements RemoteCon
 	@Override
 	public void sendMessage(String message){
 		if (this.messageTarget != null){
-			this.bot.sendNotice(this.messageTarget, ChatColorHelper.convertMCtoIRC(message));
+			this.bot.sendMessage(this.messageTarget, ChatColorHelper.convertMCtoIRC(message));
 		}
 	}
 	
@@ -96,12 +100,16 @@ public class IRCCommandSender extends BaseObject<SimpleIRC> implements RemoteCon
 	
 	@Override
 	public boolean hasPermission(String name){
+		if (this.excludedPermissions.contains(name)){
+			return false;
+		}
+		
 		return this.perm.hasPermission(name);
 	}
 	
 	@Override
 	public boolean hasPermission(Permission perm){
-		return this.perm.hasPermission(perm);
+		return this.hasPermission(perm.getName());
 	}
 	
 	@Override

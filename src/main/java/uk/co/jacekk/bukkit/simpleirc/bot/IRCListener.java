@@ -20,7 +20,6 @@ import org.pircbotx.hooks.events.PrivateMessageEvent;
 import org.pircbotx.hooks.events.QuitEvent;
 
 import uk.co.jacekk.bukkit.simpleirc.ChatColorHelper;
-import uk.co.jacekk.bukkit.simpleirc.Config;
 import uk.co.jacekk.bukkit.simpleirc.RemotePlayerChatEvent;
 import uk.co.jacekk.bukkit.simpleirc.SimpleIRC;
 
@@ -55,9 +54,8 @@ public class IRCListener extends ListenerAdapter<SimpleIRCBot> implements Listen
 			
 			this.commandSender.setMessageTarget(event.getChannel().getName());
 			this.commandSender.setName(playerName);
+			
 			plugin.server.dispatchCommand(this.commandSender, command);
-			this.commandSender.setMessageTarget(null);
-			this.commandSender.setName(null);
 		}else{
 			RemotePlayerChatEvent chatEvent = new RemotePlayerChatEvent(playerName, message, new HashSet<Player>(Arrays.asList(plugin.server.getOnlinePlayers())));
 			
@@ -87,9 +85,9 @@ public class IRCListener extends ListenerAdapter<SimpleIRCBot> implements Listen
 			for (Channel channel : this.plugin.bot.getChannels()){
 				if (channel.getOps().contains(user)){
 					this.commandSender.setMessageTarget(sender);
+					this.commandSender.setName(playerName);
+					
 					plugin.server.dispatchCommand(this.commandSender, message);
-					this.commandSender.setMessageTarget(null);
-					this.commandSender.setName(null);
 					
 					return;
 				}
