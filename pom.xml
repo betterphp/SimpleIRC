@@ -5,16 +5,16 @@
 	<name>SimpleIRC</name>
 	<version>0.4-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<url>http://dev.bukkit.org/server-mods/simpleirc/</url>
+	<url>http://dev.bukkit.org/bukkit-plugins/simpleirc/</url>
 	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		
-		<upload.dbo.category>server-mods</upload.dbo.category>
+		<upload.dbo.category>bukkit-plugins</upload.dbo.category>
 		<upload.dbo.slug>simpleirc</upload.dbo.slug>
 		
-		<baseplugin.version>11.1</baseplugin.version>
-		<baseplugin.package>11_1</baseplugin.package>
+		<baseplugin.version>12</baseplugin.version>
+		<baseplugin.package>12</baseplugin.package>
 	</properties>
 	
 	<repositories>
