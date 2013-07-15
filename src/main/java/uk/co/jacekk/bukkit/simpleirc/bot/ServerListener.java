@@ -84,6 +84,10 @@ public class ServerListener extends BaseListener<SimpleIRC> {
 		String playerName = event.getPlayer().getName();
 		String message = event.getJoinMessage();
 		
+		if (message == null){
+			return;
+		}
+		
 		if (plugin.gameAliases.containsKey(playerName)){
 			message = message.replaceAll(playerName, plugin.gameAliases.get(playerName));
 		}
@@ -96,6 +100,10 @@ public class ServerListener extends BaseListener<SimpleIRC> {
 		String playerName = event.getPlayer().getName();
 		String message = event.getQuitMessage();
 		
+		if (message == null){
+			return;
+		}
+		
 		if (plugin.gameAliases.containsKey(playerName)){
 			message = message.replaceAll(playerName, plugin.gameAliases.get(playerName));
 		}
@@ -107,6 +115,10 @@ public class ServerListener extends BaseListener<SimpleIRC> {
 	public void onPlayerDeath(PlayerDeathEvent event){
 		String playerName = event.getEntity().getName();
 		String message = event.getDeathMessage();
+		
+		if (message == null){
+			return;
+		}
 		
 		if (plugin.gameAliases.containsKey(playerName)){
 			message = message.replaceAll(playerName, plugin.gameAliases.get(playerName));
